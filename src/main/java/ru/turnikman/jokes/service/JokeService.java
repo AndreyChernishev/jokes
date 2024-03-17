@@ -8,7 +8,9 @@ import java.util.Optional;
 
 @Service
 public interface JokeService {
-    void addJoke(Joke joke);
+    boolean addJoke(Joke joke);
     List<Joke> getAllJokes();
     Optional<Joke> getJokeById(Long id);
+    boolean deleteJokeById(Long id);
+    boolean changeJokeById(Long id, Joke joke);
 }

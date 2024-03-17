@@ -1,10 +1,12 @@
 package ru.turnikman.jokes.service;
 
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.turnikman.jokes.model.Joke;
 import ru.turnikman.jokes.repository.JokesRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,20 +18,53 @@ public class JokeServiceImpl implements JokeService {
 
     //    private final TelegramBot telegramBot;
     @Override
-    public void addJoke(Joke joke) {
+    public boolean addJoke(Joke joke) {
         Optional<Joke> jokeOptional = jokesRepository.findByJoke(joke.getJoke());
         if (jokeOptional.isEmpty()) {
             joke.setId(null);
+            Date curDate = new Date();
+            joke.setCreated(curDate);
+            joke.setUpdated(curDate);
             jokesRepository.save(joke);
+            return true;
         }
+        else
+            return false;
     }
+
     @Override
     public List<Joke> getAllJokes() {
         return jokesRepository.findAll();
     }
 
     @Override
-    public Optional<Joke> getJokeById(Long id){
+    public Optional<Joke> getJokeById(Long id) {
         return jokesRepository.findById(id);
+    }
+
+    @Override
+    public boolean deleteJokeById(Long id) {
+        Optional<Joke> jokeOptional = jokesRepository.findById(id);
+        if (jokeOptional.isPresent()) {
+            jokesRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean changeJokeById(Long id, Joke joke) {
+        Optional<Joke> jokeOptional = jokesRepository.findById(id);
+        if (jokeOptional.isPresent()) {
+            Joke newJoke = jokeOptional.get();
+            newJoke.setJoke(joke.getJoke());
+            newJoke.setUpdated(new Date());
+            jokesRepository.save(newJoke);
+            return true;
+        }
+        else
+            return false;
     }
 }

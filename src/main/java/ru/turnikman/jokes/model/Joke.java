@@ -1,5 +1,6 @@
 package ru.turnikman.jokes.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,9 +24,11 @@ public class Joke {
     @Column(name = "joke")
     private String joke;
 
-//    @Column(name = "created")
-//    private Date created;
-//
-//    @Column(name = "updated")
-//    private Date updated;
+    @Column(name = "created")
+    @JsonFormat(timezone = "GMT+03:00")
+    private Date created;
+
+    @Column(name = "updated")
+    @JsonFormat(timezone = "GMT+03:00")
+    private Date updated;
 }

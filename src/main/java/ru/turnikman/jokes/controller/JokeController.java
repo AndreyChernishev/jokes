@@ -16,9 +16,10 @@ public class JokeController {
 
     @PostMapping
     ResponseEntity<Void> addJoke(@RequestBody Joke joke) {
-        System.out.println(joke);
-        jokeService.addJoke(joke);
-        return ResponseEntity.ok().build();
+        if (jokeService.addJoke(joke))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 
     @GetMapping
@@ -29,5 +30,21 @@ public class JokeController {
     @GetMapping("/{id}")
     ResponseEntity<Joke> getJokeById(@PathVariable Long id) {
         return jokeService.getJokeById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Joke> deleteJokeById(@PathVariable Long id) {
+        if (jokeService.deleteJokeById(id))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Joke> changeJokeById(@PathVariable Long id, @RequestBody Joke joke) {
+        if (jokeService.changeJokeById(id, joke))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 }
