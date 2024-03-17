@@ -1,6 +1,5 @@
 package ru.turnikman.jokes.service;
 
-import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.turnikman.jokes.model.Joke;
