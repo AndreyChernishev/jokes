@@ -10,14 +10,19 @@ import org.springframework.stereotype.Service;
 import ru.turnikman.jokes.model.Joke;
 import ru.turnikman.jokes.repository.JokesRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.lang.Math;
 
 @Service
-public class TelegramBotService  {
+public class TelegramBotService {
 
+    private final JokesRepository jokesRepository;
     private final TelegramBot telegramBot; //Забираем наш бин с ботом из Spring-а
 
-    public TelegramBotService(@Autowired TelegramBot telegramBot) { //Конструктор для вставки бина
+    //Конструктор для вставки бина
+    public TelegramBotService(JokesRepository jokesRepository, @Autowired TelegramBot telegramBot) {
+        this.jokesRepository = jokesRepository;
         this.telegramBot = telegramBot;
         this.telegramBot.setUpdatesListener(updates -> { //Лямбда - регистрируем слушателя обновлений
             updates.forEach(this::buttonClickReact); //В лямбде забираем все обновления - и вызываем обработку их
@@ -26,8 +31,12 @@ public class TelegramBotService  {
     }
 
     private void buttonClickReact(Update update) { //Реагируем на событие
-        //Optional<Joke> joke = jokesRepository.findById(1);
-        String joke = "Joke 1";
+        Optional<String> jokeOptional = jokesRepository.findRandomJoke();
+        String joke;
+        if (jokeOptional.isPresent())
+            joke = jokeOptional.get();
+        else
+            joke = "Анекдотов пока нет (";
         //Подготавливаем сообщение на ответ
         SendMessage request = new SendMessage(update.message().chat().id(), joke) //update.message().chat().id() - Id, в какой чат отправлять сообщение, в данном случае - тому, кто написал
                 .parseMode(ParseMode.HTML) //Без понятия, что такое, но было в документации
@@ -36,5 +45,4 @@ public class TelegramBotService  {
                 .replyToMessageId(update.message().messageId()); //Делаем наш ответ как ответ на отправленное ранее сообщение
         this.telegramBot.execute(request); //Отправляем подготовленное сообщение
     }
-
 }

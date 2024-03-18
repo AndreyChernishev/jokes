@@ -1,5 +1,6 @@
 package ru.turnikman.jokes.service;
 
+import com.pengrad.telegrambot.TelegramBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.turnikman.jokes.model.Joke;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class JokeServiceImpl implements JokeService {
 
     private final JokesRepository jokesRepository;
+
+    private final TelegramBot telegramBot;
 
     //    private final TelegramBot telegramBot;
     @Override
