@@ -16,9 +16,6 @@ public class JokeServiceImpl implements JokeService {
 
     private final JokesRepository jokesRepository;
 
-    private final TelegramBot telegramBot;
-
-    //    private final TelegramBot telegramBot;
     @Override
     public boolean addJoke(Joke joke) {
         Optional<Joke> jokeOptional = jokesRepository.findByJoke(joke.getJoke());
