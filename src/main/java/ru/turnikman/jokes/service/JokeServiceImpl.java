@@ -1,11 +1,9 @@
 package ru.turnikman.jokes.service;
 
-import com.pengrad.telegrambot.TelegramBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.turnikman.jokes.model.Joke;
 import ru.turnikman.jokes.repository.JokesRepository;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
